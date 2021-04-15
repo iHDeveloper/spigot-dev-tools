@@ -1,0 +1,3 @@
+[submodule "legacy-mod"]
+	path = legacy-mod
+	url = git@github.com:iHDeveloper/spigot-dev-tools-mod.git
