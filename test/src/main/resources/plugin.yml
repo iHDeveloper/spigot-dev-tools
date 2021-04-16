@@ -5,3 +5,8 @@ main: me.ihdeveloper.spigot.devtools.test.Main
 
 depend:
   - SpigotDevTools
+
+commands:
+  dev-test:
+    usage: "Usage: /<command> <0-3>"
+    description: Trigger differnet kind of tests for the developer tools

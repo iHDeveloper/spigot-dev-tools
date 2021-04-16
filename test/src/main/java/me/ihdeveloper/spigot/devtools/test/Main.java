@@ -13,6 +13,7 @@ public class Main extends JavaPlugin {
             return;
         }
 
+        getCommand("dev-test").setExecutor(new TestCommand());
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§4 TEST§a is enabled!§e Plugin By§3 @iHDeveloper");
     }
 

@@ -14,11 +14,11 @@ public final class DevTools {
         instance.getWatcher().put(player, key, value);
     }
 
-    public static void removeWatch(String key) {
+    public static void unwatch(String key) {
         instance.getWatcher().remove(key);
     }
 
-    public static void removeWatch(Player player, String key) {
+    public static void unwatch(Player player, String key) {
         instance.getWatcher().remove(player, key);
     }
 
