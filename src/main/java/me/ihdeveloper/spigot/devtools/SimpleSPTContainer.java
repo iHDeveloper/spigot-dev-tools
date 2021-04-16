@@ -1,18 +1,21 @@
 package me.ihdeveloper.spigot.devtools;
 
 import me.ihdeveloper.spigot.devtools.api.SPTContainer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class SimpleSPTContainer implements SPTContainer {
 
-    private final Player player;
+    private final UUID uuid;
 
-    public SimpleSPTContainer(Player player) {
-        this.player = player;
+    public SimpleSPTContainer(UUID uuid) {
+        this.uuid = uuid;
     }
 
     @Override
     public Player getPlayer() {
-        return player;
+        return Bukkit.getPlayer(uuid);
     }
 }

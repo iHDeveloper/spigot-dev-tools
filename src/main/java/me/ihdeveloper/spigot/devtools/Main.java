@@ -40,7 +40,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools {
             return null;
 
 
-        return containers.put(player.getUniqueId(), new SimpleSPTContainer(player));
+        return containers.put(player.getUniqueId(), new SimpleSPTContainer(player.getUniqueId()));
     }
 
     @Override
