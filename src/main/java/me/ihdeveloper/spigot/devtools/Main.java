@@ -1,5 +1,6 @@
 package me.ihdeveloper.spigot.devtools;
 
+import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SPTContainer;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import me.ihdeveloper.spigot.devtools.api.Watcher;
@@ -7,6 +8,9 @@ import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
 import me.ihdeveloper.spigot.devtools.api.message.MessageHandler;
 import me.ihdeveloper.spigot.devtools.auth.OPAuthorizationHandler;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,7 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
-public final class Main extends JavaPlugin implements SpigotDevTools {
+public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
 
     private static Main instance;
 
@@ -91,11 +95,21 @@ public final class Main extends JavaPlugin implements SpigotDevTools {
         /* Default Setup */
         setAuthorizationHandler(new OPAuthorizationHandler());
 
+        DevTools.setInstance(this);
+
+        getServer().getPluginManager().registerEvents(this, this);
+
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
         getServer().getConsoleSender().sendMessage("§6WARNING!§e The authorization method: " + authorizationHandler.toString());
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "Spigot|DevTools");
         getServer().getMessenger().registerIncomingPluginChannel(this, "Spigot|DevTools", new ChannelListener(this));
+    }
+
+    @SuppressWarnings("unused")
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+        containers.remove(event.getPlayer().getUniqueId());
     }
 
     @Override
