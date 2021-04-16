@@ -1,4 +1,4 @@
-name: example-plugin
+name: SpigotDevTools
 version: 0.1
-author: example-name
-main: com.example.plugin.Main
+author: iHDeveloper
+main: me.ihdeveloper.spigot.devtools.Main
