@@ -63,7 +63,8 @@ public class ChannelListener implements PluginMessageListener {
             return;
         }
 
-        // TODO process other message
+        /* Process other types of messages */
+        spigotDevTools.processMessage(type, player, input);
     }
 
 }

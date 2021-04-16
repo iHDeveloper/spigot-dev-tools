@@ -3,18 +3,24 @@ package me.ihdeveloper.spigot.devtools;
 import me.ihdeveloper.spigot.devtools.api.SPTContainer;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
+import me.ihdeveloper.spigot.devtools.api.message.MessageHandler;
 import me.ihdeveloper.spigot.devtools.auth.OPAuthorizationHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.DataInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public final class Main extends JavaPlugin implements SpigotDevTools {
 
     private final Map<UUID, SPTContainer> containers = new HashMap<>();
+    private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -27,6 +33,24 @@ public final class Main extends JavaPlugin implements SpigotDevTools {
 
 
         return containers.put(player.getUniqueId(), new BasicSPTContainer(player));
+    }
+
+    @Override
+    public void registerHandler(String name, MessageHandler handler) {
+        messageHandlers.computeIfAbsent(name, k -> new ArrayList<>()).add(handler);
+    }
+
+    @Override
+    public void processMessage(String name, Player player, DataInputStream input) {
+        List<MessageHandler> handlers = messageHandlers.get(name);
+
+        if (handlers == null) {
+            return;
+        }
+
+        for (MessageHandler handler : handlers) {
+            handler.processMessage(this, player, input);
+        }
     }
 
     @Override
