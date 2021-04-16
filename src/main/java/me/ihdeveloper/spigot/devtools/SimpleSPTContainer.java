@@ -3,11 +3,11 @@ package me.ihdeveloper.spigot.devtools;
 import me.ihdeveloper.spigot.devtools.api.SPTContainer;
 import org.bukkit.entity.Player;
 
-public class BasicSPTContainer implements SPTContainer {
+public class SimpleSPTContainer implements SPTContainer {
 
     private final Player player;
 
-    public BasicSPTContainer(Player player) {
+    public SimpleSPTContainer(Player player) {
         this.player = player;
     }
 

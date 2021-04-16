@@ -2,6 +2,7 @@ package me.ihdeveloper.spigot.devtools;
 
 import me.ihdeveloper.spigot.devtools.api.SPTContainer;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
+import me.ihdeveloper.spigot.devtools.api.Watcher;
 import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
 import me.ihdeveloper.spigot.devtools.api.message.MessageHandler;
 import me.ihdeveloper.spigot.devtools.auth.OPAuthorizationHandler;
@@ -19,8 +20,15 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public final class Main extends JavaPlugin implements SpigotDevTools {
 
+    private static Main instance;
+
+    public static Main getInstance() {
+        return instance;
+    }
+
     private final Map<UUID, SPTContainer> containers = new HashMap<>();
     private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
+    private final SimpleWatcher simpleWatcher = new SimpleWatcher();
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -32,7 +40,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools {
             return null;
 
 
-        return containers.put(player.getUniqueId(), new BasicSPTContainer(player));
+        return containers.put(player.getUniqueId(), new SimpleSPTContainer(player));
     }
 
     @Override
@@ -66,6 +74,11 @@ public final class Main extends JavaPlugin implements SpigotDevTools {
     @Override
     public Plugin getPlugin() {
         return this;
+    }
+
+    @Override
+    public Watcher getWatcher() {
+        return simpleWatcher;
     }
 
     @Override

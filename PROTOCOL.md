@@ -13,6 +13,32 @@ The packet format in the messaging channel should look like this:
 
 --
 
+## Server-bound Messages
+
+### Hello
+This means that the server acknowledged you and authorized you to listen to the hidden game data.
+
+**Note:** This message has no data
+
+### Watcher Put
+The server is giving you a read-only state to watch. Each state has a unique key.
+If there are two states with the same key, Then the old state gets replaces with the new state.
+
+Name: `watcher-put`
+```java
+String key = in.readUTF();
+String value = in.readUTF();
+```
+
+### Watcher Remove
+The server is telling you to remove a state from the watcher.
+If the key of the state doesn't exist then no need to remove anything.
+
+Name: `watcher-remove`
+```java
+String key = in.readUTF();
+```
+
 ## Client-bound Messages
 
 ### Hello

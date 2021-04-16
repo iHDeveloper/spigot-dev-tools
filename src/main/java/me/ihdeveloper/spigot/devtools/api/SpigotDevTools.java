@@ -21,6 +21,8 @@ public interface SpigotDevTools {
 
     Plugin getPlugin();
 
+    Watcher getWatcher();
+
     SPTContainer getContainer(Player player);
 
 }
