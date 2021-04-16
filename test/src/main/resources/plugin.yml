@@ -1,0 +1,7 @@
+name: SpigotDevTools-Test
+version: 0.1
+author: iHDeveloper
+main: me.ihdeveloper.spigot.devtools.test.Main
+
+depend:
+  - SpigotDevTools

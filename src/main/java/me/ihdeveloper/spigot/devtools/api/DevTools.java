@@ -6,10 +6,6 @@ public final class DevTools {
 
     private static SpigotDevTools instance;
 
-    public static void setInstance(SpigotDevTools instance) {
-        DevTools.instance = instance;
-    }
-
     public static void watch(String key, String value) {
         instance.getWatcher().put(key, value);
     }
@@ -24,6 +20,14 @@ public final class DevTools {
 
     public static void removeWatch(Player player, String key) {
         instance.getWatcher().remove(player, key);
+    }
+
+    public static void setInstance(SpigotDevTools instance) {
+        DevTools.instance = instance;
+    }
+
+    public static SpigotDevTools getInstance() {
+        return instance;
     }
 
 }
