@@ -43,7 +43,6 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         if (!authorizationHandler.accept(player))
             return null;
 
-
         return containers.put(player.getUniqueId(), new SimpleSPTContainer(player.getUniqueId()));
     }
 
@@ -95,6 +94,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         /* Default Setup */
         setAuthorizationHandler(new OPAuthorizationHandler());
 
+        instance = this;
         DevTools.setInstance(this);
 
         getServer().getPluginManager().registerEvents(this, this);

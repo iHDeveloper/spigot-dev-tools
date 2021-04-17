@@ -1,6 +1,7 @@
 package me.ihdeveloper.spigot.devtools.test;
 
 import me.ihdeveloper.spigot.devtools.api.DevTools;
+import me.ihdeveloper.spigot.devtools.test.command.TestCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -13,6 +14,8 @@ public class Main extends JavaPlugin {
             return;
         }
 
+
+        getCommand("hello").setExecutor(new HelloCommand());
         getCommand("dev-test").setExecutor(new TestCommand());
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§4 TEST§a is enabled!§e Plugin By§3 @iHDeveloper");
     }
