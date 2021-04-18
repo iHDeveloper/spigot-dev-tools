@@ -1,7 +1,7 @@
 package me.ihdeveloper.spigot.devtools;
 
 import me.ihdeveloper.spigot.devtools.api.DevTools;
-import me.ihdeveloper.spigot.devtools.api.SPTContainer;
+import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import me.ihdeveloper.spigot.devtools.api.Watcher;
 import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
@@ -30,20 +30,22 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         return instance;
     }
 
-    private final Map<UUID, SPTContainer> containers = new HashMap<>();
+    private final Map<UUID, SDTContainer> containers = new HashMap<>();
     private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
     private final SimpleWatcher simpleWatcher = new SimpleWatcher();
     private AuthorizationHandler authorizationHandler;
 
     @Override
-    public SPTContainer hello(Player player) {
+    public SDTContainer hello(Player player) {
         if (authorizationHandler == null)
             return null;
 
         if (!authorizationHandler.accept(player))
             return null;
 
-        return containers.put(player.getUniqueId(), new SimpleSPTContainer(player.getUniqueId()));
+        SDTContainer container = new SimpleSDTContainer(player.getUniqueId());
+        containers.put(player.getUniqueId(), container);
+        return container;
     }
 
     @Override
@@ -85,7 +87,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     }
 
     @Override
-    public SPTContainer getContainer(Player player) {
+    public SDTContainer getContainer(Player player) {
         return containers.get(player.getUniqueId());
     }
 

@@ -1,6 +1,6 @@
 package me.ihdeveloper.spigot.devtools;
 
-import me.ihdeveloper.spigot.devtools.api.SPTContainer;
+import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -40,7 +40,7 @@ public class ChannelListener implements PluginMessageListener {
 
         /* Process hello message */
         if (type.equals("hello")) {
-            SPTContainer container = spigotDevTools.hello(player);
+            SDTContainer container = spigotDevTools.hello(player);
 
             if (container == null) {
                 /* Kick unauthorized players */

@@ -9,7 +9,7 @@ import java.io.DataInputStream;
 
 public interface SpigotDevTools {
 
-    SPTContainer hello(Player player);
+    SDTContainer hello(Player player);
 
     void registerHandler(String name, MessageHandler handler);
 
@@ -23,6 +23,6 @@ public interface SpigotDevTools {
 
     Watcher getWatcher();
 
-    SPTContainer getContainer(Player player);
+    SDTContainer getContainer(Player player);
 
 }
