@@ -54,3 +54,10 @@ Name: `hello`
 **Notes:**
 - This packet can be sent at anytime.
 - This packet should be sent after the player login successfully!
+- The server will accept connections with the same major and same or higher minor.
+
+```java
+/* Protocol version that the client understands */
+out.writeByte(major);
+out.writeByte(minor);
+```

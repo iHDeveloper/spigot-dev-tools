@@ -9,7 +9,7 @@ import java.io.DataInputStream;
 
 public interface SpigotDevTools {
 
-    SDTContainer hello(Player player);
+    SDTContainer hello(Player player, byte major, byte minor);
 
     void registerHandler(String name, MessageHandler handler);
 

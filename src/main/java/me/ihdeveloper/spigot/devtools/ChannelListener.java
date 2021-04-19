@@ -37,15 +37,17 @@ public class ChannelListener implements PluginMessageListener {
 
     private void processMessage(Player player, DataInputStream input) throws IOException {
         String type = input.readUTF();
+        byte major = input.readByte();
+        byte minor = input.readByte();
 
         /* Process hello message */
         if (type.equals("hello")) {
-            SDTContainer container = spigotDevTools.hello(player);
+            SDTContainer container = spigotDevTools.hello(player, major, minor);
 
             if (container == null) {
                 /* Kick unauthorized players */
                 Bukkit.getConsoleSender().sendMessage("§6WARNING!§e Player§7 " + player.getName() + "§c tried to say hello without access!");
-                player.kickPlayer("Spigot Dev Tools: Unauthorized!");
+                player.kickPlayer("Spigot Dev Tools: Unauthorized or Outdated!");
                 return;
             }
 

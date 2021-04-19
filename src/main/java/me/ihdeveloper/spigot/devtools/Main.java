@@ -23,6 +23,8 @@ import java.util.UUID;
 
 @SuppressWarnings("unused")
 public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
+    private static final byte protocolMajor = 0;
+    private static final byte protocolMinor = 1;
 
     private static Main instance;
 
@@ -36,7 +38,13 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private AuthorizationHandler authorizationHandler;
 
     @Override
-    public SDTContainer hello(Player player) {
+    public SDTContainer hello(Player player, byte major, byte minor) {
+        if (major != protocolMajor)
+            return null;
+
+        if (minor < protocolMinor)
+            return null;
+
         if (authorizationHandler == null)
             return null;
 
@@ -102,6 +110,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         getServer().getPluginManager().registerEvents(this, this);
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
+        getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + protocolMajor + "." + protocolMinor);
         getServer().getConsoleSender().sendMessage("§6WARNING!§e The authorization method: " + authorizationHandler.toString());
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "Spigot|DevTools");
