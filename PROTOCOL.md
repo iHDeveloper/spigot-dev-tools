@@ -20,6 +20,15 @@ This means that the server acknowledged you and authorized you to listen to the 
 
 **Note:** This message has no data
 
+### TPS
+The server is broadcasting the TPS every 30 seconds.
+```java
+double recentTPS = new double[3];
+for (int i = 0; i < 2; i++)
+    recentTPS[i] = in.readDouble();
+
+```
+
 ### Watcher Put
 The server is giving you a read-only state to watch. Each state has a unique key.
 If there are two states with the same key, Then the old state gets replaces with the new state.

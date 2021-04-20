@@ -16,9 +16,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.DataInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -100,6 +102,11 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     }
 
     @Override
+    public Collection<SDTContainer> getContainers() {
+        return containers.values();
+    }
+
+    @Override
     public void onEnable() {
         /* Default Setup */
         setAuthorizationHandler(new OPAuthorizationHandler());
@@ -108,6 +115,8 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         DevTools.setInstance(this);
 
         getServer().getPluginManager().registerEvents(this, this);
+
+        getServer().getScheduler().runTaskTimer(this, new TPSTask(), 0L, 30 * 20L);
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
         getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + protocolMajor + "." + protocolMinor);

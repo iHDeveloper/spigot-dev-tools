@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import java.io.DataInputStream;
+import java.util.Collection;
 
 public interface SpigotDevTools {
 
@@ -24,5 +25,7 @@ public interface SpigotDevTools {
     Watcher getWatcher();
 
     SDTContainer getContainer(Player player);
+
+    Collection<SDTContainer> getContainers();
 
 }
