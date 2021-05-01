@@ -22,11 +22,26 @@ This means that the server acknowledged you and authorized you to listen to the 
 
 ### TPS
 The server is broadcasting the TPS every 30 seconds.
+
+Name: `tps`
 ```java
 double recentTPS = new double[3];
 for (int i = 0; i < 2; i++)
     recentTPS[i] = in.readDouble();
+```
 
+### Profiler
+The server is broadcasting the calculated Profiler every 1 second.
+
+Name: `profiler`
+```java
+int length = in.readInt();
+for (int i = 0; i < length; i++) {
+    String name = in.readUTF();
+    boolean updated = in.readBoolean();
+    long ticks = in.readLong();
+    double percent = in.readDouble();
+}
 ```
 
 ### Watcher Put

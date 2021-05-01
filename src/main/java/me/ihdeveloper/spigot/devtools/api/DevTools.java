@@ -22,6 +22,18 @@ public final class DevTools {
         instance.getWatcher().remove(player, key);
     }
 
+    public static void profileStart(String name) {
+        instance.getProfiler().start(name);
+    }
+
+    public static void profileStart(String name, boolean keep) {
+        instance.getProfiler().start(name, keep);
+    }
+
+    public static void profileEnd(String name) {
+        instance.getProfiler().end(name);
+    }
+
     public static void setInstance(SpigotDevTools instance) {
         DevTools.instance = instance;
     }

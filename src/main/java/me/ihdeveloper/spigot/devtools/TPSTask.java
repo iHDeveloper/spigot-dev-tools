@@ -15,6 +15,8 @@ public class TPSTask implements Runnable {
 
     @Override
     public void run() {
+        DevTools.profileStart("TPS-TASK");
+
         double[] recentTPS;
         try {
             Object server = Bukkit.getServer();
@@ -49,5 +51,7 @@ public class TPSTask implements Runnable {
         for (SDTContainer container : DevTools.getInstance().getContainers()) {
             container.getPlayer().sendPluginMessage(Main.getInstance(), "Spigot|DevTools", data);
         }
+
+        DevTools.profileEnd("TPS-TASK");
     }
 }

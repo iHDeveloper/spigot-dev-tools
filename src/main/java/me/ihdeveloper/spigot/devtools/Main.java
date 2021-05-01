@@ -2,6 +2,7 @@ package me.ihdeveloper.spigot.devtools;
 
 import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SDTContainer;
+import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import me.ihdeveloper.spigot.devtools.api.Watcher;
 import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
@@ -37,6 +38,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private final Map<UUID, SDTContainer> containers = new HashMap<>();
     private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
     private final SimpleWatcher simpleWatcher = new SimpleWatcher();
+    private final SimpleSDTProfiler simpleProfiler = new SimpleSDTProfiler();
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -97,6 +99,11 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     }
 
     @Override
+    public SDTProfiler getProfiler() {
+        return simpleProfiler;
+    }
+
+    @Override
     public SDTContainer getContainer(Player player) {
         return containers.get(player.getUniqueId());
     }
@@ -117,6 +124,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         getServer().getPluginManager().registerEvents(this, this);
 
         getServer().getScheduler().runTaskTimer(this, new TPSTask(), 0L, 30 * 20L);
+        getServer().getScheduler().runTaskTimer(this, new ProfilerTask(), 0L, 20L);
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
         getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + protocolMajor + "." + protocolMinor);

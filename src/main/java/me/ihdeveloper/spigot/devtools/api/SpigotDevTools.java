@@ -24,6 +24,8 @@ public interface SpigotDevTools {
 
     Watcher getWatcher();
 
+    SDTProfiler getProfiler();
+
     SDTContainer getContainer(Player player);
 
     Collection<SDTContainer> getContainers();
