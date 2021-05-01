@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class SimpleSDTContainer implements SDTContainer {
+public class SimpleContainer implements SDTContainer {
 
     private final UUID uuid;
 
-    public SimpleSDTContainer(UUID uuid) {
+    public SimpleContainer(UUID uuid) {
         this.uuid = uuid;
     }
 

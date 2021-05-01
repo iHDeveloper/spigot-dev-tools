@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SimpleSDTProfiler implements SDTProfiler {
+public class SimpleProfiler implements SDTProfiler {
 
     private Map<String, Subject> subjects = new TreeMap<>();
     private MutableItem[] result;

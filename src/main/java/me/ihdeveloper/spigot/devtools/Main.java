@@ -8,6 +8,8 @@ import me.ihdeveloper.spigot.devtools.api.Watcher;
 import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
 import me.ihdeveloper.spigot.devtools.api.message.MessageHandler;
 import me.ihdeveloper.spigot.devtools.auth.OPAuthorizationHandler;
+import me.ihdeveloper.spigot.devtools.task.ProfilerTask;
+import me.ihdeveloper.spigot.devtools.task.TPSTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,7 +23,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -38,7 +39,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private final Map<UUID, SDTContainer> containers = new HashMap<>();
     private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
     private final SimpleWatcher simpleWatcher = new SimpleWatcher();
-    private final SimpleSDTProfiler simpleProfiler = new SimpleSDTProfiler();
+    private final SimpleProfiler simpleProfiler = new SimpleProfiler();
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -55,7 +56,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         if (!authorizationHandler.accept(player))
             return null;
 
-        SDTContainer container = new SimpleSDTContainer(player.getUniqueId());
+        SDTContainer container = new SimpleContainer(player.getUniqueId());
         containers.put(player.getUniqueId(), container);
         return container;
     }

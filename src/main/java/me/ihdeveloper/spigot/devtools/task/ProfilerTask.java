@@ -1,5 +1,6 @@
-package me.ihdeveloper.spigot.devtools;
+package me.ihdeveloper.spigot.devtools.task;
 
+import me.ihdeveloper.spigot.devtools.Main;
 import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
