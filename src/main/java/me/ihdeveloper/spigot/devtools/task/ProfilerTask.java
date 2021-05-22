@@ -16,26 +16,18 @@ public class ProfilerTask implements Runnable {
         SDTProfiler profiler = DevTools.getInstance().getProfiler();
 
         profiler.build();
-        SDTProfiler.Item[] items = profiler.getItems();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
             out.writeUTF("profiler");
 
-            if (items != null) {
-                int length = items.length;
-                out.writeInt(length);
-
-                for (int i = 0; i < length; i++) {
-                    SDTProfiler.Item item = items[i];
-                    out.writeUTF(item.getName());
-                    out.writeBoolean(item.isUpdated());
-                    out.writeLong(item.getTicks());
-                    out.writeDouble(item.getPercent());
-                }
-            } else {
-                out.writeInt(0);
+            out.writeInt(profiler.getItems().size());
+            for (SDTProfiler.Item item : profiler.getItems()) {
+                out.writeUTF(item.getName());
+                out.writeBoolean(item.isUpdated());
+                out.writeLong(item.getTicks());
+                out.writeDouble(item.getPercent());
             }
         } catch (IOException exception) {
             exception.printStackTrace();

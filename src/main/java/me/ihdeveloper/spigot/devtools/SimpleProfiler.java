@@ -1,19 +1,17 @@
 package me.ihdeveloper.spigot.devtools;
 
-import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
 
-import javax.security.auth.Subject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class SimpleProfiler implements SDTProfiler {
 
-    private Map<String, Subject> subjects = new TreeMap<>();
-    private MutableItem[] result;
+    private final Map<String, Subject> subjects = new TreeMap<>();
+    private final ArrayList<Item> result = new ArrayList<>();
     private boolean hasOld = false;
     private long lowestStart = Long.MAX_VALUE;
     private long highestEnd = -1L;
@@ -45,23 +43,31 @@ public class SimpleProfiler implements SDTProfiler {
     @Override
     public void build() {
         if (subjects.isEmpty()) {
-            result = null;
+            this.result.clear();
             return;
         }
 
         // TODO handle it in a way to support unfinished subjects!
         boolean notReady = (lowestStart == Long.MAX_VALUE || highestEnd == -1L);
         if (!hasOld && notReady) {
-            result = null;
+            this.result.clear();
             return;
         }
 
-        List<MutableItem> list = new ArrayList<>();
-
         double duration = (highestEnd - lowestStart);
 
+        int index = 0;
         for (Subject subject : subjects.values()) {
-            MutableItem item = new MutableItem();
+            MutableItem item;
+
+            // Use the already allocated mutable objects or allocate new ones if not enough
+            if (index >= this.result.size()) {
+                item = new MutableItem();
+            } else {
+                item = (MutableItem) this.result.get(index);
+            }
+            index++;
+
             item.name = subject.name;
             item.updated = subject.updated;
             long subjectDuration = (subject.end - subject.start);
@@ -69,7 +75,7 @@ public class SimpleProfiler implements SDTProfiler {
 
             if (!subject.updated) {
                 item.percent = 0;
-                list.add(item);
+                this.result.add(item);
                 continue;
             }
 
@@ -78,17 +84,19 @@ public class SimpleProfiler implements SDTProfiler {
             }
 
             item.percent = (subjectDuration / duration) * 100.0;
-
-            list.add(item);
+            this.result.add(item);
         }
 
-        result = list.toArray(new MutableItem[0]);
+        // Remove the unused allocated mutable objects
+        while ((index + 1) < this.result.size()) {
+            this.result.remove(index + 1);
+        }
 
         reset();
     }
 
     @Override
-    public SDTProfiler.Item[] getItems() {
+    public Collection<Item> getItems() {
         return result;
     }
 

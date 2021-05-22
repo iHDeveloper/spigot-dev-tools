@@ -1,5 +1,7 @@
 package me.ihdeveloper.spigot.devtools.api;
 
+import java.util.Collection;
+
 public interface SDTProfiler {
 
     void start(String name);
@@ -10,7 +12,7 @@ public interface SDTProfiler {
 
     void build();
 
-    Item[] getItems();
+    Collection<Item> getItems();
 
     interface Item {
         String getName();
