@@ -14,10 +14,15 @@ public interface SDTProfiler {
 
     Collection<Item> getItems();
 
+    long getTotalTicks();
+
+    long getTotalMilliseconds();
+
     interface Item {
         String getName();
         boolean isUpdated();
         long getTicks();
+        long getMilliseconds();
         double getPercent();
     }
 

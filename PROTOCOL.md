@@ -36,10 +36,13 @@ The server is broadcasting the calculated Profiler every 1 second.
 Name: `profiler`
 ```java
 int length = in.readInt();
+int totalTicks = in.readLong();
+int totalMilliseconds = in.readLong();
 for (int i = 0; i < length; i++) {
     String name = in.readUTF();
     boolean updated = in.readBoolean();
     long ticks = in.readLong();
+    long ms = in.readLong();
     double percent = in.readDouble();
 }
 ```

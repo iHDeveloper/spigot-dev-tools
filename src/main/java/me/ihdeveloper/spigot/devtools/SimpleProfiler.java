@@ -13,8 +13,8 @@ public class SimpleProfiler implements SDTProfiler {
     private final Map<String, Subject> subjects = new TreeMap<>();
     private final ArrayList<Item> result = new ArrayList<>();
     private boolean hasOld = false;
-    private long lowestStart = Long.MAX_VALUE;
-    private long highestEnd = -1L;
+    private long totalMilliseconds = 0;
+    private long totalTicks = 0;
 
     @Override
     public void start(String name) {
@@ -24,8 +24,8 @@ public class SimpleProfiler implements SDTProfiler {
     @Override
     public void start(String name, boolean keep) {
         Subject subject = subjects.computeIfAbsent(name, (key) -> new Subject(name, keep));
+        subject.keep = keep;
         subject.reset();
-        this.lowestStart = Math.min(subject.start, this.lowestStart);
     }
 
     @Override
@@ -37,7 +37,6 @@ public class SimpleProfiler implements SDTProfiler {
         }
 
         subject.end();
-        this.highestEnd = Math.max(subject.end, this.highestEnd);
     }
 
     @Override
@@ -47,24 +46,36 @@ public class SimpleProfiler implements SDTProfiler {
             return;
         }
 
+        long duration = 0;
+        for (Subject subject : subjects.values()) {
+            if (!subject.updated)
+                continue;
+
+            duration += (subject.end - subject.start);
+        }
+
         // TODO handle it in a way to support unfinished subjects!
-        boolean notReady = (lowestStart == Long.MAX_VALUE || highestEnd == -1L);
+        boolean notReady = (duration == 0);
         if (!hasOld && notReady) {
             this.result.clear();
             return;
         }
 
-        double duration = (highestEnd - lowestStart);
+        this.totalTicks = 0;
+        this.totalMilliseconds = 0;
 
         int index = 0;
+        boolean allocated;
         for (Subject subject : subjects.values()) {
             MutableItem item;
 
             // Use the already allocated mutable objects or allocate new ones if not enough
             if (index >= this.result.size()) {
                 item = new MutableItem();
+                allocated = false;
             } else {
                 item = (MutableItem) this.result.get(index);
+                allocated = true;
             }
             index++;
 
@@ -72,19 +83,25 @@ public class SimpleProfiler implements SDTProfiler {
             item.updated = subject.updated;
             long subjectDuration = (subject.end - subject.start);
             item.ticks = subjectDuration / 50_000_000L;
+            item.milliseconds = subjectDuration / 1_000_000L;
 
             if (!subject.updated) {
                 item.percent = 0;
-                this.result.add(item);
+                if (!allocated)
+                    this.result.add(item);
                 continue;
             }
+
+            totalTicks += item.ticks;
+            totalMilliseconds += item.milliseconds;
 
             if (notReady) {
                 continue;
             }
 
-            item.percent = (subjectDuration / duration) * 100.0;
-            this.result.add(item);
+            item.percent = (((double) subjectDuration / (double) duration) * 100.0);
+            if (!allocated)
+                this.result.add(item);
         }
 
         // Remove the unused allocated mutable objects
@@ -100,10 +117,17 @@ public class SimpleProfiler implements SDTProfiler {
         return result;
     }
 
-    private void reset() {
-        this.lowestStart = Long.MAX_VALUE;
-        this.highestEnd = -1L;
+    @Override
+    public long getTotalTicks() {
+        return totalTicks;
+    }
 
+    @Override
+    public long getTotalMilliseconds() {
+        return totalMilliseconds;
+    }
+
+    private void reset() {
         List<String> subjectsToRemove = new ArrayList<>();
 
         hasOld = false;
@@ -126,6 +150,7 @@ public class SimpleProfiler implements SDTProfiler {
         private String name;
         private boolean updated;
         private long ticks;
+        private long milliseconds;
         private double percent;
 
         @Override
@@ -141,6 +166,11 @@ public class SimpleProfiler implements SDTProfiler {
         @Override
         public long getTicks() {
             return ticks;
+        }
+
+        @Override
+        public long getMilliseconds() {
+            return milliseconds;
         }
 
         @Override

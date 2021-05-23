@@ -23,10 +23,13 @@ public class ProfilerTask implements Runnable {
             out.writeUTF("profiler");
 
             out.writeInt(profiler.getItems().size());
+            out.writeLong(profiler.getTotalTicks());
+            out.writeLong(profiler.getTotalMilliseconds());
             for (SDTProfiler.Item item : profiler.getItems()) {
                 out.writeUTF(item.getName());
                 out.writeBoolean(item.isUpdated());
                 out.writeLong(item.getTicks());
+                out.writeLong(item.getMilliseconds());
                 out.writeDouble(item.getPercent());
             }
         } catch (IOException exception) {

@@ -5,7 +5,7 @@ import me.ihdeveloper.spigot.devtools.api.DevTools;
 public class ProfileTesterTask implements Runnable {
 
     private final String name;
-    private int operationSize = 1_000_000;
+    private int operationSize;
     private int something = 100;
 
     public ProfileTesterTask(String name, int operationSize) {

@@ -14,10 +14,16 @@ public class Main extends JavaPlugin {
             return;
         }
 
-        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Light Operation", 1_000), 0L, 1L);
-        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Medium Operation", 500_000), 0L, 1L);
-        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Heavy Operation 1", 1_000_000), 0L, 1L);
-        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Heavy Operation 2", 10_000_000), 0L, 5L);
+        long period = 5L;
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Light Operation", 1_000), 0L, period);
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Medium Operation", 500_000), 0L, period);
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Heavy Operation 1", 1_000_000), 0L, period);
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Heavy Operation 2", 10_000_000), 0L, period);
+
+        // Lazy Operations
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Lazy Light Operation", 50_000_000), 0L, 7 * 20L);
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Lazy Medium Operation", 75_000_000), 0L, 20 * 20L);
+        getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Lazy Heavy Operation", 100_000_000), 0L, 30 * 20L);
 
 
         getCommand("hello").setExecutor(new HelloCommand());
