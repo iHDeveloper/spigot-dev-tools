@@ -47,69 +47,76 @@ allprojects {
     repositories {
         mavenCentral()
         mavenLocal()
-    }
-
-    dependencies {
-        // Include the server jar source
-        if (buildTools.useLocalDependency) {
-            compileOnly("org.spigotmc:spigot:${buildTools.localDependencyVersion}")
-        } else {
-            if (server.jar.exists()) {
-                compileOnly(files(server.jar.absolutePath))
-            } else if (buildTools.serverJar.exists()) {
-                compileOnly(files(buildTools.serverJar.absolutePath))
-            }
+        maven {
+            url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         }
-
-        testCompileOnly("junit", "junit", "4.12")
     }
 
     configure<JavaPluginConvention> {
         sourceCompatibility = JavaVersion.VERSION_1_8
     }
 
-    tasks {
-        /**
-         * Overwrite the build task to put the compiled jar into the build folder instead of build/libs
-         */
-        build {
-            dependsOn("shadowJar")
+    if (project.name != "api") {
+        dependencies {
+            compileOnly(project(":api"))
 
-            // Copy the compiled plugin jar from build/libs to build/
-            doLast {
-                copy {
-                    val libsDir = File("${project.buildDir}/libs")
-                    from(libsDir)
-                    into(libsDir.parent)
+            // Include the server jar source
+            if (buildTools.useLocalDependency) {
+                compileOnly("org.spigotmc:spigot:${buildTools.localDependencyVersion}")
+            } else {
+                if (server.jar.exists()) {
+                    compileOnly(files(server.jar.absolutePath))
+                } else if (buildTools.serverJar.exists()) {
+                    compileOnly(files(buildTools.serverJar.absolutePath))
                 }
             }
+
+            testCompileOnly("junit", "junit", "4.12")
         }
 
-        shadowJar {
-            from("LICENSE")
+        tasks {
+            /**
+             * Overwrite the build task to put the compiled jar into the build folder instead of build/libs
+             */
+            build {
+                dependsOn("shadowJar")
 
-            val name = "${archiveBaseName.get()}-${archiveVersion.get()}.${archiveExtension.get()}"
-            archiveFileName.set(name)
-        }
-
-        /**
-         * Build the plugin for the server
-         */
-        register("build-plugin") {
-            dependsOn("build")
-            if (project == rootProject) {
-                subprojects.forEach { dependsOn(":${it.name}:build-plugin") }
+                // Copy the compiled plugin jar from build/libs to build/
+                doLast {
+                    copy {
+                        val libsDir = File("${project.buildDir}/libs")
+                        from(libsDir)
+                        into(libsDir.parent)
+                    }
+                }
             }
 
-            doLast {
+            shadowJar {
+                from("LICENSE")
 
-                // Copy generated plugin jar into server plugins folder
-                copy {
-                    from(file("${project.buildDir}/libs"))
-                    into(server.plugins)
+                val name = "${archiveBaseName.get()}-${archiveVersion.get()}.${archiveExtension.get()}"
+                archiveFileName.set(name)
+            }
+
+            /**
+             * Build the plugin for the server
+             */
+            register("build-plugin") {
+                dependsOn("build")
+                if (project == rootProject) {
+                    subprojects.forEach { dependsOn(":${it.name}:build-plugin") }
                 }
 
-                logger.lifecycle("Built! plugins/${shadowJar.get().archiveFileName.get()}")
+                doLast {
+
+                    // Copy generated plugin jar into server plugins folder
+                    copy {
+                        from(file("${project.buildDir}/libs"))
+                        into(server.plugins)
+                    }
+
+                    logger.lifecycle("Built! plugins/${shadowJar.get().archiveFileName.get()}")
+                }
             }
         }
     }
@@ -262,6 +269,17 @@ tasks {
                 args = mutableListOf(
                         server.jar.absolutePath
                 )
+            }
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("api") {
+
+            artifact(file("api/build/libs/api-0.1.jar")) {
+                classifier = "api"
             }
         }
     }
