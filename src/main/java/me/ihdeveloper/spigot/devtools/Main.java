@@ -29,7 +29,7 @@ import java.util.UUID;
 @SuppressWarnings("unused")
 public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private static final byte protocolMajor = 0;
-    private static final byte protocolMinor = 1;
+    private static final byte protocolMinor = 2;
 
     private static Main instance;
 
@@ -135,6 +135,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         getServer().getScheduler().runTaskTimer(this, new TPSTask(), 0L, 30 * 20L);
         getServer().getScheduler().runTaskTimer(this, new ProfilerTask(), 0L, 20L);
 
+        simpleServerWall.put("SDT Protocol Version", "v" + protocolMajor + "." + protocolMajor);
         simpleServerWall.put("§eServer Version", getServer().getVersion());
         simpleServerWall.put("§eBukkit Version", getServer().getBukkitVersion());
         simpleServerWall.put("§eMax Players", "" + getServer().getMaxPlayers());
