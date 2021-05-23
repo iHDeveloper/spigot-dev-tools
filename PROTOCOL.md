@@ -47,6 +47,38 @@ for (int i = 0; i < length; i++) {
 }
 ```
 
+### Server Wall Put
+Put information on the server wall.
+
+- When the player joins
+- When something on the wall changes
+
+Name: `server-wall-put`
+```java
+int length = in.readInt();
+
+for (int i = 0; i < length; i++) {
+    String name = in.readUTF();
+    String value = in.readUTF();
+}
+```
+
+### Server Wall Remove
+Remove certain information from the server wall.
+
+Name: `server-wall-remove`
+```java
+String name = in.readUTF();
+```
+
+### Server Wall Clear
+Clears the server wall data.
+
+Name: `server-wall-clear`
+```java
+/* Empty */
+```
+
 ### Watcher Put
 The server is giving you a read-only state to watch. Each state has a unique key.
 If there are two states with the same key, Then the old state gets replaces with the new state.

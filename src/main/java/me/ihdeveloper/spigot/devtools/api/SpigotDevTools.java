@@ -26,6 +26,8 @@ public interface SpigotDevTools {
 
     SDTProfiler getProfiler();
 
+    SDTServerWall getServerWall();
+
     SDTContainer getContainer(Player player);
 
     Collection<SDTContainer> getContainers();

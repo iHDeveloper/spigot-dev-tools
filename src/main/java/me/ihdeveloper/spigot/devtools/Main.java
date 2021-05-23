@@ -3,6 +3,7 @@ package me.ihdeveloper.spigot.devtools;
 import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
+import me.ihdeveloper.spigot.devtools.api.SDTServerWall;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import me.ihdeveloper.spigot.devtools.api.Watcher;
 import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
@@ -40,6 +41,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
     private final SimpleWatcher simpleWatcher = new SimpleWatcher();
     private final SimpleProfiler simpleProfiler = new SimpleProfiler();
+    private final SimpleServerWall simpleServerWall = new SimpleServerWall();
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -58,6 +60,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
 
         SDTContainer container = new SimpleContainer(player.getUniqueId());
         containers.put(player.getUniqueId(), container);
+        simpleServerWall.sendWall(player);
         return container;
     }
 
@@ -105,6 +108,11 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     }
 
     @Override
+    public SDTServerWall getServerWall() {
+        return simpleServerWall;
+    }
+
+    @Override
     public SDTContainer getContainer(Player player) {
         return containers.get(player.getUniqueId());
     }
@@ -126,6 +134,12 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
 
         getServer().getScheduler().runTaskTimer(this, new TPSTask(), 0L, 30 * 20L);
         getServer().getScheduler().runTaskTimer(this, new ProfilerTask(), 0L, 20L);
+
+        simpleServerWall.put("§eServer Version", getServer().getVersion());
+        simpleServerWall.put("§eBukkit Version", getServer().getBukkitVersion());
+        simpleServerWall.put("§eMax Players", "" + getServer().getMaxPlayers());
+        simpleServerWall.put("§eAllow Nether", "" + getServer().getAllowEnd());
+        simpleServerWall.put("§eAllow The End", "" + getServer().getAllowEnd());
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
         getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + protocolMajor + "." + protocolMinor);

@@ -34,6 +34,10 @@ public final class DevTools {
         instance.getProfiler().end(name);
     }
 
+    public static void pin(String name, String value) { instance.getServerWall().put(name, value); }
+
+    public static void unpin(String name) { instance.getServerWall().remove(name); }
+
     public static void setInstance(SpigotDevTools instance) {
         DevTools.instance = instance;
     }
