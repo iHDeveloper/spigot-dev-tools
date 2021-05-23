@@ -135,7 +135,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         getServer().getScheduler().runTaskTimer(this, new TPSTask(), 0L, 30 * 20L);
         getServer().getScheduler().runTaskTimer(this, new ProfilerTask(), 0L, 20L);
 
-        simpleServerWall.put("SDT Protocol Version", "v" + protocolMajor + "." + protocolMajor);
+        simpleServerWall.put("§eSDT Protocol Version", "v" + protocolMajor + "." + protocolMajor);
         simpleServerWall.put("§eServer Version", getServer().getVersion());
         simpleServerWall.put("§eBukkit Version", getServer().getBukkitVersion());
         simpleServerWall.put("§eMax Players", "" + getServer().getMaxPlayers());

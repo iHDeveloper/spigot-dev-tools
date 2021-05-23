@@ -58,7 +58,11 @@ allprojects {
 
     if (project.name != "api") {
         dependencies {
-            compileOnly(project(":api"))
+            if (project == rootProject) {
+                implementation(project(":api"))
+            } else {
+                compileOnly(project(":api"))
+            }
 
             // Include the server jar source
             if (buildTools.useLocalDependency) {
@@ -104,7 +108,9 @@ allprojects {
             register("build-plugin") {
                 dependsOn("build")
                 if (project == rootProject) {
-                    subprojects.forEach { dependsOn(":${it.name}:build-plugin") }
+                    subprojects.forEach {
+			            if (it.name != "api") dependsOn(":${it.name}:build-plugin")
+		            }
                 }
 
                 doLast {
