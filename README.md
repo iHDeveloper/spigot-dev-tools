@@ -1,6 +1,5 @@
 # Spigot Dev Tools
-Spigot plugin that aims to be provide tools that will help the spigot developer
-monitor/debugging the game world.
+Lightweight spigot library to provide developer tools to monitor/debug the Minecraft game world.
 
 # Modules
 - `~` (aka root) is Spigot plugin to host the custom plugin messaging channel
