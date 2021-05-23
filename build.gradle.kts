@@ -6,6 +6,7 @@ plugins {
     java
     id ("de.undercouch.download") version "4.0.4"
     id ("com.github.johnrengelman.shadow") version "5.2.0"
+    `maven-publish`
 }
 
 val useLocalDependency: String by project
@@ -133,7 +134,7 @@ tasks {
      */
     register<Download>("download-build-tools") {
         onlyIf {
-            !buildTools.useLocalDependency && !buildTools.file.exists() && !server.jar.exists()
+            !buildTools.useLocalDependency && !buildTools.file.exists()
         }
 
         val temp = buildTools.buildDir
@@ -197,7 +198,7 @@ tasks {
             try {
                 Thread.sleep(2 * 1000)
             } catch (e: InterruptedException) {
-                logger.warn("Sleep has been interrupted!")
+                logger.info("Sleep has been interrupted!")
             }
 
             // Since the process didn't stop
