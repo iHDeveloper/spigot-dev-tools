@@ -284,7 +284,7 @@ publishing {
     publications {
         create<MavenPublication>("api") {
 
-            artifact(file("api/build/libs/api-0.1.jar")) {
+            artifact(file("api/build/libs/api-${project.version}.jar")) {
                 classifier = "api"
             }
         }
