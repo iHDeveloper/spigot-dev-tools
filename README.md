@@ -6,7 +6,11 @@ Lightweight spigot library to provide developer tools to monitor/debug the Minec
 - `~` (aka root) is Spigot plugin to host the custom plugin messaging channel
 - `~/legacy-mod` is forge mod (1.8.9) for providing graphical developer tools
 
-## 🗄⠀Gradle
+## 🗄⠀Download
+### Plugin
+You can download the main plugin from [here](https://github.com/iHDeveloper/spigot-dev-tools/releases/tag/v0.2.1-alpha)
+### API
+- Maven
 ```xml
 <repositories>
     <repository>
@@ -16,18 +20,23 @@ Lightweight spigot library to provide developer tools to monitor/debug the Minec
 </repositories>
 
 <dependency>
-    <groupId>me.ihdeveloper</groupId>
-    <artifactId>spigot-dev-tools</artifactId>
-    <version>v0.2.1-alpha</version>
-    <classifier>api</classifier>
-    <scope>provided</scope> <!-- The API is already included with the plugin -->
+<groupId>me.ihdeveloper</groupId>
+<artifactId>spigot-dev-tools</artifactId>
+<version>v0.2.1-alpha</version>
+<classifier>api</classifier>
+<scope>provided</scope> <!-- The API is already included with the plugin -->
 </dependency>
 ```
-Groovy
+
+- Groovy
 ```groovy
 compileOnly 'me.ihdeveloper:spigot-dev-tools:v0.2.1-alpha:api';
 ```
-Gradle Kotlin DSL
+
+- Kotlin DSL
 ```kotlin
 compileOnly("me.ihdeveloper:spigot-dev-tools:v0.2.1-alpha:api")
 ```
+
+- Scratch
+  If you don't want to use the options above, then you can download the API from [here](https://github.com/iHDeveloper/spigot-dev-tools/releases/tag/v0.2.1-alpha)
