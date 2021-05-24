@@ -36,7 +36,7 @@ internal val buildTools = BuildTools(
 
 allprojects {
     group = "me.ihdeveloper"
-    version = "0.2"
+    version = "0.2.1"
 
     if (project != rootProject) {
         apply(plugin = "java")
