@@ -81,7 +81,7 @@ public class SimpleServerWall implements SDTServerWall {
         DataOutputStream output = new DataOutputStream(stream);
         try {
             output.writeUTF("server-wall–put");
-            output.writeInt(0);
+            output.writeInt(1);
             output.writeUTF(name);
             output.writeUTF(value);
         } catch (IOException exception) {
