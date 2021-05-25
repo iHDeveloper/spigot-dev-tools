@@ -98,6 +98,22 @@ Name: `watcher-remove`
 String key = in.readUTF();
 ```
 
+### Logger
+The server is informing you about a log that has been issued.
+
+Name: `logger-message`
+```java
+byte type = in.readByte();
+/**
+ * 1 = DEBUG
+ * 2 = ERROR
+ * 3 = WARNING
+ * 4 = INFO
+*/
+
+String message = in.readUTF();
+```
+
 ## Client-bound Messages
 
 ### Hello

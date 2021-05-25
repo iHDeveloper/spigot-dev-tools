@@ -46,9 +46,6 @@ public class TPSTask implements Runnable {
             return;
         }
 
-        byte[] data = stream.toByteArray();
-        for (SDTContainer container : DevTools.getInstance().getContainers()) {
-            container.getPlayer().sendPluginMessage(Main.getInstance(), "Spigot|DevTools", data);
-        }
+        Main.getInstance().broadcast(stream.toByteArray());
     }
 }

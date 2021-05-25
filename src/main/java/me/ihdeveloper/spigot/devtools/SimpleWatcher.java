@@ -13,17 +13,29 @@ public class SimpleWatcher implements Watcher {
 
     @Override
     public void put(String key, String value) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!Main.getInstance().hasSaidHello(player)) {
-                continue;
-            }
-
-            put(player, key, value);
-        }
+        byte[] data = buildPut(key, value);
+        Main.getInstance().broadcast(data);
     }
 
     @Override
     public void put(Player player, String key, String value) {
+        byte[] data = buildPut(key, value);
+        Main.getInstance().sendData(player, data);
+    }
+
+    @Override
+    public void remove(String key) {
+        byte[] data = buildRemove(key);
+        Main.getInstance().broadcast(data);
+    }
+
+    @Override
+    public void remove(Player player, String key) {
+        byte[] data = buildRemove(key);
+        Main.getInstance().sendData(player, data);
+    }
+
+    private byte[] buildPut(String key, String value) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream output = new DataOutputStream(stream);
         try {
@@ -33,22 +45,11 @@ public class SimpleWatcher implements Watcher {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+
+        return stream.toByteArray();
     }
 
-    @Override
-    public void remove(String key) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!Main.getInstance().hasSaidHello(player)) {
-                continue;
-            }
-
-            remove(player, key);
-        }
-    }
-
-    @Override
-    public void remove(Player player, String key) {
+    private byte[] buildRemove(String key) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream output = new DataOutputStream(stream);
         try {
@@ -57,6 +58,7 @@ public class SimpleWatcher implements Watcher {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+
+        return stream.toByteArray();
     }
 }

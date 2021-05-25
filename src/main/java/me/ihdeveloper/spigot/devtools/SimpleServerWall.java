@@ -19,39 +19,24 @@ public class SimpleServerWall implements SDTServerWall {
     public void put(String name, String value) {
         this.wall.put(name, value);
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!Main.getInstance().hasSaidHello(player)) {
-                continue;
-            }
-
-            sendWallPut(player, name, value);
-        }
+        byte[] data = buildChunkOfWall(name, value);
+        Main.getInstance().broadcast(data);
     }
 
     @Override
     public void remove(String name) {
         this.wall.remove(name);
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!Main.getInstance().hasSaidHello(player)) {
-                continue;
-            }
-
-            sendWallRemove(player, name);
-        }
+        byte[] data = buildRemovePartOfWall(name);
+        Main.getInstance().broadcast(data);
     }
 
     @Override
     public void clear() {
         this.wall.clear();
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!Main.getInstance().hasSaidHello(player)) {
-                continue;
-            }
-
-            sendWallClear(player);
-        }
+        byte[] data = buildClear();
+        Main.getInstance().broadcast(data);
     }
 
     @Override
@@ -60,6 +45,11 @@ public class SimpleServerWall implements SDTServerWall {
     }
 
     public void sendWall(Player player) {
+        byte[] data = buildWall();
+        Main.getInstance().sendData(player, data);
+    }
+
+    private byte[] buildWall() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream output = new DataOutputStream(stream);
         try {
@@ -73,10 +63,11 @@ public class SimpleServerWall implements SDTServerWall {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+
+        return stream.toByteArray();
     }
 
-    private void sendWallPut(Player player, String name, String value) {
+    private byte[] buildChunkOfWall(String name, String value) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream output = new DataOutputStream(stream);
         try {
@@ -87,10 +78,11 @@ public class SimpleServerWall implements SDTServerWall {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+
+        return stream.toByteArray();
     }
 
-    private void sendWallRemove(Player player, String name) {
+    private byte[] buildRemovePartOfWall(String name) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream output = new DataOutputStream(stream);
         try {
@@ -99,10 +91,11 @@ public class SimpleServerWall implements SDTServerWall {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+
+        return stream.toByteArray();
     }
 
-    private void sendWallClear(Player player) {
+    private byte[] buildClear() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream output = new DataOutputStream(stream);
         try {
@@ -110,7 +103,8 @@ public class SimpleServerWall implements SDTServerWall {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+
+        return stream.toByteArray();
     }
 
 }

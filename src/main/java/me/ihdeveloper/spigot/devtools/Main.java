@@ -1,6 +1,7 @@
 package me.ihdeveloper.spigot.devtools;
 
 import me.ihdeveloper.spigot.devtools.api.DevTools;
+import me.ihdeveloper.spigot.devtools.api.Logger;
 import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
 import me.ihdeveloper.spigot.devtools.api.SDTServerWall;
@@ -42,6 +43,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private final SimpleWatcher simpleWatcher = new SimpleWatcher();
     private final SimpleProfiler simpleProfiler = new SimpleProfiler();
     private final SimpleServerWall simpleServerWall = new SimpleServerWall();
+    private final SimpleLogger logger = new SimpleLogger();
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -113,6 +115,11 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     }
 
     @Override
+    public Logger logger() {
+        return logger;
+    }
+
+    @Override
     public SDTContainer getContainer(Player player) {
         return containers.get(player.getUniqueId());
     }
@@ -159,6 +166,24 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     @Override
     public void onDisable() {
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§c is disabled!§e Plugin By§3 @iHDeveloper");
+    }
+
+    public void broadcast(byte[] data) {
+        for (SDTContainer container : getContainers()) {
+            sendData(container, data);
+        }
+    }
+
+    public void sendData(Player player, byte[] data) {
+        SDTContainer container = getContainer(player);
+
+        if (container != null) {
+            sendData(container, data);
+        }
+    }
+
+    public void sendData(SDTContainer container, byte[] data) {
+        container.getPlayer().sendPluginMessage(this, "Spigot|DevTools", data);
     }
 
 }

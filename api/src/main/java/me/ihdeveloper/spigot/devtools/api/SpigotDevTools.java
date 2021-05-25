@@ -28,6 +28,8 @@ public interface SpigotDevTools {
 
     SDTServerWall getServerWall();
 
+    Logger logger();
+
     SDTContainer getContainer(Player player);
 
     Collection<SDTContainer> getContainers();
