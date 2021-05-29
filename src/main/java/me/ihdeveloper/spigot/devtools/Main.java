@@ -43,7 +43,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
     private final SimpleWatcher simpleWatcher = new SimpleWatcher();
     private final SimpleProfiler simpleProfiler = new SimpleProfiler();
     private final SimpleServerWall simpleServerWall = new SimpleServerWall();
-    private final SimpleLogger logger = new SimpleLogger();
+    private final SimpleLogger simpleLogger = new SimpleLogger(getDataFolder());
     private AuthorizationHandler authorizationHandler;
 
     @Override
@@ -63,6 +63,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
         SDTContainer container = new SimpleContainer(player.getUniqueId());
         containers.put(player.getUniqueId(), container);
         simpleServerWall.sendWall(player);
+        simpleLogger.sendCache(container);
         return container;
     }
 
@@ -116,7 +117,7 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
 
     @Override
     public Logger logger() {
-        return logger;
+        return simpleLogger;
     }
 
     @Override
@@ -165,6 +166,8 @@ public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
 
     @Override
     public void onDisable() {
+        simpleLogger.dispose();
+
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§c is disabled!§e Plugin By§3 @iHDeveloper");
     }
 

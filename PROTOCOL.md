@@ -98,7 +98,7 @@ Name: `watcher-remove`
 String key = in.readUTF();
 ```
 
-### Logger
+### Logger Message
 The server is informing you about a log that has been issued.
 
 Name: `logger-message`
@@ -112,6 +112,19 @@ byte type = in.readByte();
 */
 
 String message = in.readUTF();
+```
+
+### Logger Chunk
+The server is sending a cached chunk of logs
+
+Name: `logger-chunk`
+```java
+int length = in.readInt();
+
+for (int i = 0; i < length; i++) {
+    byte type = in.readByte();
+    String message = in.readUTF();
+}
 ```
 
 ## Client-bound Messages
