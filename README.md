@@ -2,6 +2,24 @@
 # Spigot Dev Tools
 Lightweight spigot library to provide developer tools to monitor/debug the Minecraft game world.
 
+## Showcase
+
+### Server Wall
+![Server Wall](./img/server-wall.png)
+Global information about the server
+
+### Profiler
+![Profiler](./img/profiler.png)
+Overview of the performance of certain operations in the server
+
+### Watcher
+![Watcher](./img/watcher.png)
+Read-Only table to watch multiple values (different for each player)
+
+### TPS
+![TPS](./img/tps.png)
+Overview of the server cycle performance (aka TPS).
+
 ## 📦⠀Modules
 - `~` (aka root) is Spigot plugin to host the custom plugin messaging channel
 - `~/legacy-mod` is forge mod (1.8.9) for providing graphical developer tools
