@@ -2,7 +2,7 @@
 # Spigot Dev Tools
 Lightweight spigot library to provide developer tools to monitor/debug the Minecraft game world.
 
-## Showcase
+## 🌃⠀Showcase
 [[Old] Youtube](https://youtu.be/BXlPDq4DVlw)
 
 ### Server Wall
@@ -78,3 +78,13 @@ compileOnly("me.ihdeveloper:spigot-dev-tools:v0.2.1-alpha:api")
 
 - Scratch
   If you don't want to use the options above, then you can download the API from [here](https://github.com/iHDeveloper/spigot-dev-tools/releases/tag/v0.2.1-alpha)
+
+### Dependency
+Add this to your `plugin.yml` to load the plugin before your plugin.
+```yml
+depend:
+  - SpigotDevTools
+```
+
+## 👨‍💻⠀Credits
+This project is made with ❤️⠀by @iHDeveloper
