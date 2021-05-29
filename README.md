@@ -8,18 +8,37 @@ Lightweight spigot library to provide developer tools to monitor/debug the Minec
 ### Server Wall
 ![Server Wall](./img/server-wall.png)
 Global information about the server
+```java
+DevTools.pin("Max Players", "20");
+DevTools.unpin("Max Players");
+```
 
 ### Profiler
 ![Profiler](./img/profiler.png)
 Overview of the performance of certain operations in the server
+```java
+DevTools.profileStart("Regions");
+/* Regions calculation */
+DevTools.profileEnd("Regions");
+```
 
 ### Watcher
 ![Watcher](./img/watcher.png)
 Read-Only table to watch multiple values (different for each player)
+```java
+DevTools.watch("Winner", winnerName);
+DevTools.unwatch("Winner"); /* Broadcasted to all online players ONLY! */
+
+DevTools.watch(player, "Region", regionName);
+DevTools.unwatch(player, "Region");
+```
 
 ### TPS
 ![TPS](./img/tps.png)
 Overview of the server cycle performance (aka TPS).
+```java
+/* Enabled by default! */
+```
 
 ## 📦⠀Modules
 - `~` (aka root) is Spigot plugin to host the custom plugin messaging channel
