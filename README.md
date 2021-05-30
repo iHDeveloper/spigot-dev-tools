@@ -5,6 +5,11 @@ Lightweight spigot library to provide developer tools to monitor/debug the Minec
 **Note:** This project is in the alpha state.
 If you found any bug/glitch, open an issue in the [issue tracker](https://github.com/iHDeveloper/spigot-dev-tools/issues).
 
+|Minecraft Version | Plugin | Minecraft Mod |
+|------------------|--------|---------------|
+| **1.8.x** (Legacy) | ✓ | ✓ |
+| **1.16.x** | ✓ (not tested) | Not Supported |
+
 ## 🌃⠀Showcase
 [[Old] Youtube](https://youtu.be/BXlPDq4DVlw)
 
