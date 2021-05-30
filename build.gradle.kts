@@ -36,7 +36,7 @@ internal val buildTools = BuildTools(
 
 allprojects {
     group = "me.ihdeveloper"
-    version = "0.2.1"
+    version = "0.3"
 
     if (project != rootProject) {
         apply(plugin = "java")
@@ -283,10 +283,7 @@ tasks {
 publishing {
     publications {
         create<MavenPublication>("api") {
-
-            artifact(file("api/build/libs/api-${project.version}.jar")) {
-                classifier = "api"
-            }
+            artifact(file("api/build/libs/api-${project.version}.jar"))
         }
     }
 }

@@ -17,7 +17,7 @@ import java.io.IOException;
 @SuppressWarnings("unused")
 public final class Main extends JavaPlugin implements Listener {
     private static final byte PROTOCOL_MAJOR = 0;
-    private static final byte PROTOCOL_MINOR = 2;
+    private static final byte PROTOCOL_MINOR = 3;
 
     private SimpleSpigotDevTools simpleSpigotDevTools;
 
