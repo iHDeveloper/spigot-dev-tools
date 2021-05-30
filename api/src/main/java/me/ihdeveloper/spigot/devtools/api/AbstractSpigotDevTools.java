@@ -15,13 +15,14 @@ import java.util.UUID;
 
 public abstract class AbstractSpigotDevTools implements SpigotDevTools {
 
-    private final byte protocolMajor;
-    private final byte protocolMinor;
-    private final Plugin plugin;
-    private final Map<UUID, SDTContainer> containers;
-    private final Map<String, List<MessageHandler>> messageHandlers;
-    private AuthorizationHandler authorizationHandler;
-    private boolean autoDiscovery = true;
+    protected final byte protocolMajor;
+    protected final byte protocolMinor;
+    protected final Plugin plugin;
+    protected final Map<UUID, SDTContainer> containers;
+    protected final Map<String, List<MessageHandler>> messageHandlers;
+    protected AuthorizationHandler authorizationHandler;
+    protected boolean autoDiscovery = true;
+
     private Watcher watcher;
     private SDTProfiler profiler;
     private SDTServerWall serverWall;
@@ -145,7 +146,7 @@ public abstract class AbstractSpigotDevTools implements SpigotDevTools {
         if (!containers.containsKey(player.getUniqueId()))
             return;
 
-        forceSend(player, data);
+        player.sendPluginMessage(getPlugin(), "Spigot|DevTools", data);
     }
 
     @Override
@@ -153,25 +154,6 @@ public abstract class AbstractSpigotDevTools implements SpigotDevTools {
         for (SDTContainer container : getContainers()) {
             send(container, data);
         }
-    }
-
-    /**
-     * Internal functions
-     */
-    public AuthorizationHandler getAuthorizationHandler() {
-        return authorizationHandler;
-    }
-
-    public boolean isAutoDiscovery() {
-        return autoDiscovery;
-    }
-
-    public void remove(UUID uniqueId) {
-        containers.remove(uniqueId);
-    }
-
-    public void forceSend(Player player, byte[] data) {
-        player.sendPluginMessage(getPlugin(), "Spigot|DevTools", data);
     }
 
     /**

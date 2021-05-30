@@ -6,6 +6,7 @@ import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
 import me.ihdeveloper.spigot.devtools.api.SDTServerWall;
 import me.ihdeveloper.spigot.devtools.api.Watcher;
+import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -16,6 +17,23 @@ public class SimpleSpigotDevTools extends AbstractSpigotDevTools {
     public SimpleSpigotDevTools(Plugin plugin, byte major, byte minor) {
         super(plugin, major, minor);
     }
+
+    /**
+     * Internal functions
+     */
+    public AuthorizationHandler getAuthorizationHandler() {
+        return authorizationHandler;
+    }
+
+    public boolean isAutoDiscovery() {
+        return autoDiscovery;
+    }
+
+    public void remove(UUID uniqueId) {
+        containers.remove(uniqueId);
+    }
+
+    public void forceSend(Player player, byte[] data) { player.sendPluginMessage(getPlugin(), "Spigot|DevTools", data); }
 
     @Override
     public Watcher getNewWatcher() {
