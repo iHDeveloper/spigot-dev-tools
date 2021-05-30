@@ -117,4 +117,4 @@ depend:
 ```
 
 ## 👨‍💻⠀Credits
-This project is made with ❤️⠀by @iHDeveloper
+This project is made⠀by @iHDeveloper
