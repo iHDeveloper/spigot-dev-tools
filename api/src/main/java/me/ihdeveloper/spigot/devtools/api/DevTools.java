@@ -38,7 +38,7 @@ public final class DevTools {
 
     public static void unpin(String name) { instance.getServerWall().remove(name); }
 
-    public static Logger log() { return instance.logger(); }
+    public static Logger logger() { return instance.logger(); }
 
     public static void setInstance(SpigotDevTools instance) {
         DevTools.instance = instance;

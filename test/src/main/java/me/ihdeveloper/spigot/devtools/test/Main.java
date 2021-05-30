@@ -25,6 +25,13 @@ public class Main extends JavaPlugin {
         getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Lazy Medium Operation", 75_000_000), 0L, 20 * 20L);
         getServer().getScheduler().runTaskTimer(this, new ProfileTesterTask("Lazy Heavy Operation", 100_000_000), 0L, 30 * 20L);
 
+        DevTools.logger().info("This server is using the test plugin of §eSpigot Dev Tools!");
+        DevTools.logger().info("§ePlugin By §c@iHDeveloper");
+        DevTools.logger().info("Example of info log message!");
+        DevTools.logger().warn("Example of warn log message!");
+        DevTools.logger().err("Example of error log message!");
+        DevTools.logger().debug("Example of debug log message!");
+        DevTools.logger().debug("Example of debug log message!");
 
         getCommand("hello").setExecutor(new HelloCommand());
         getCommand("dev-test").setExecutor(new TestCommand());

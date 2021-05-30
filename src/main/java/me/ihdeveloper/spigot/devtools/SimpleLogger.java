@@ -5,10 +5,13 @@ import me.ihdeveloper.spigot.devtools.api.Logger;
 import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class SimpleLogger implements Logger {
     private static final int DEFAULT_MAXIMUM_CACHE = 50;
@@ -18,10 +21,36 @@ public class SimpleLogger implements Logger {
     private static final byte TYPE_ERROR = 2;
     private static final byte TYPE_DEBUG = 1;
 
+    /**
+     * Internal function for providing faster way to read/write the log cache file
+     */
+
+    private static Method $internalWriteUTF;
+    private static int internalWriteUTF(String str, DataOutput out) throws InvocationTargetException, IllegalAccessException {
+        if ($internalWriteUTF == null)
+            return 0;
+
+        $internalWriteUTF.setAccessible(true);
+        return (int) $internalWriteUTF.invoke(null, str, out);
+    }
+
+    static {
+        try {
+            $internalWriteUTF = DataOutputStream.class.getDeclaredMethod("writeUTF", String.class, DataOutput.class);
+        } catch (NoSuchMethodException e) {
+            System.err.println("Failed to setup an internal method for cache logging faster!");
+            e.printStackTrace();
+        }
+    }
+
     private final File cacheFile;
     private RandomAccessFile cacheStream;
     private int max = DEFAULT_MAXIMUM_CACHE;
     private int current = 0;
+
+    private long cachePointer = 0L;
+    private long nextBytes = 0L;
+    private boolean moveCachePointer = false;
 
     public SimpleLogger(File dataFolder) {
         this.cacheFile = new File(dataFolder, "log.cache");
@@ -80,15 +109,19 @@ public class SimpleLogger implements Logger {
         DataOutputStream out = new DataOutputStream(stream);
         try {
             out.writeUTF("logger-chunk");
-            out.writeInt(current);
+            if (moveCachePointer) {
+                out.writeInt(max);
+            } else {
+                out.writeInt(current);
+            }
 
-            this.cacheStream.seek(0L);
-            for (int i = current; i >= 0; i--) {
-                byte type = this.cacheStream.readByte();
-                String message = this.cacheStream.readUTF();
-
+            this.cacheStream.seek(this.cachePointer);
+            byte type = (byte) this.cacheStream.read();
+            while (type >= 0) {
                 out.writeByte(type);
-                out.writeUTF(message);
+                out.writeUTF(this.cacheStream.readUTF());
+
+                type = (byte) this.cacheStream.read();
             }
 
             DevTools.getInstance().send(player, stream.toByteArray());
@@ -120,14 +153,37 @@ public class SimpleLogger implements Logger {
         byte[] data = stream.toByteArray();
         DevTools.getInstance().broadcast(data);
 
-        current = Math.min(current, 50);
+        current++;
         try {
-            this.cacheStream.seek(0L);
             this.cacheStream.writeByte(type);
-            this.cacheStream.writeUTF(message);
+            int writtenBytes = internalWriteUTF(message, this.cacheStream) + 1;
+
+            if (current > max) {
+                moveCachePointer = true;
+            }
+
+            if (!moveCachePointer) {
+                if (current == 1) {
+                    this.nextBytes = writtenBytes;
+                }
+            } else {
+                this.cachePointer += nextBytes;
+                long lastWritePointer = this.cacheStream.getFilePointer();
+                this.cacheStream.seek(this.cachePointer);
+                this.cacheStream.readByte();
+                this.cacheStream.readUTF();
+                this.nextBytes = this.cacheStream.getFilePointer() - this.cachePointer;
+                this.cacheStream.seek(lastWritePointer);
+            }
         } catch (IOException exception) {
             DevTools.getInstance().getPlugin().getLogger().warning("Failed to write the new log in the cache file! (not enough storage?)");
             exception.printStackTrace();
+        } catch (IllegalAccessException e) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write the new log in the cache file! (can't access internal method)");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write the new log in the cache file! (internal method doesn't exist)");
+            e.printStackTrace();
         }
     }
 
