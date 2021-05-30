@@ -27,7 +27,11 @@ public class SimpleLogger implements Logger {
         this.cacheFile = new File(dataFolder, "log.cache");
 
         try {
-            this.cacheFile.delete();
+            dataFolder.mkdir();
+
+            if (this.cacheFile.exists())
+                this.cacheFile.delete();
+
             this.cacheFile.createNewFile();
 
             this.cacheStream = new RandomAccessFile(cacheFile, "rw");
@@ -39,9 +43,11 @@ public class SimpleLogger implements Logger {
 
     public void dispose() {
         try {
-            this.cacheStream.close();
+            if (this.cacheFile.exists()) {
+                this.cacheStream.close();
 
-            this.cacheFile.delete();
+                this.cacheFile.delete();
+            }
         } catch (IOException exception) {
             DevTools.getInstance().getPlugin().getLogger().warning("Failed to delete the logger cache file (log.cache)");
             exception.printStackTrace();
