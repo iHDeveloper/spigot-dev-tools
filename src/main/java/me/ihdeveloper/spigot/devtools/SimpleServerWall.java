@@ -61,6 +61,7 @@ public class SimpleServerWall implements SDTServerWall {
                 output.writeUTF(entry.getValue());
             }
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write server wall(put) packet data! (not enough memory?)");
             exception.printStackTrace();
         }
 
@@ -76,6 +77,7 @@ public class SimpleServerWall implements SDTServerWall {
             output.writeUTF(name);
             output.writeUTF(value);
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write server wall(chunk) packet data! (not enough memory?)");
             exception.printStackTrace();
         }
 
@@ -89,6 +91,7 @@ public class SimpleServerWall implements SDTServerWall {
             output.writeUTF("server-wall–remove");
             output.writeUTF(name);
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write server wall(remove) packet data! (not enough memory?)");
             exception.printStackTrace();
         }
 
@@ -101,6 +104,7 @@ public class SimpleServerWall implements SDTServerWall {
         try {
             output.writeUTF("server-wall–reset");
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write server wall(reset) packet data! (not enough memory?)");
             exception.printStackTrace();
         }
 

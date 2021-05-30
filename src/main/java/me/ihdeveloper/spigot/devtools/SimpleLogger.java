@@ -32,6 +32,7 @@ public class SimpleLogger implements Logger {
 
             this.cacheStream = new RandomAccessFile(cacheFile, "rw");
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to create/access the logger cache file (log.cache)");
             exception.printStackTrace();
         }
     }
@@ -42,6 +43,7 @@ public class SimpleLogger implements Logger {
 
             this.cacheFile.delete();
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to delete the logger cache file (log.cache)");
             exception.printStackTrace();
         }
     }
@@ -85,6 +87,7 @@ public class SimpleLogger implements Logger {
 
             DevTools.getInstance().send(player, stream.toByteArray());
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to send the cached logs! (corrupted cache file format/not enough memory?)");
             exception.printStackTrace();
         }
     }
@@ -103,6 +106,8 @@ public class SimpleLogger implements Logger {
             out.writeByte(type);
             out.writeUTF(message);
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to broadcast the log! ");
+            DevTools.getInstance().getPlugin().getLogger().warning("Type: " + type + " | Log Message: " + message);
             exception.printStackTrace();
         }
 
@@ -115,6 +120,7 @@ public class SimpleLogger implements Logger {
             this.cacheStream.writeByte(type);
             this.cacheStream.writeUTF(message);
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write the new log in the cache file! (not enough storage?)");
             exception.printStackTrace();
         }
     }

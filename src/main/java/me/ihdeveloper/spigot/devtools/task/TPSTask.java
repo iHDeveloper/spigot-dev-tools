@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class TPSTask implements Runnable {
+    private static final double[] FAKE_TPS = { 0, 0, 0 };
 
     @Override
     public void run() {
@@ -24,8 +25,9 @@ public class TPSTask implements Runnable {
             nmsServer$recentTps.setAccessible(true);
             recentTPS = ((double[]) nmsServer$recentTps.get(nmsServer));
         } catch (Exception exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to read TPS data! (using reflection) Assigning fake TPS...");
+            recentTPS = FAKE_TPS;
             exception.printStackTrace();
-            return;
         }
 
         if (recentTPS == null) {
@@ -39,6 +41,7 @@ public class TPSTask implements Runnable {
             for (int i = 0; i < 3; i++)
                 out.writeDouble(recentTPS[i]);
         } catch (IOException exception) {
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write TPS packet data! (not enough memory?)");
             exception.printStackTrace();
             return;
         }

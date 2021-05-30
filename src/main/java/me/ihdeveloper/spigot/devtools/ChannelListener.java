@@ -1,5 +1,6 @@
 package me.ihdeveloper.spigot.devtools;
 
+import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
 import org.bukkit.Bukkit;
@@ -31,6 +32,7 @@ public class ChannelListener implements PluginMessageListener {
             processMessage(player, input);
         } catch (IOException exception) {
             player.kickPlayer("Spigot Dev Tools: Something wrong happened! Check the console for logs!");
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to process the player's message (unknown error)");
             exception.printStackTrace();
         }
     }
