@@ -6,8 +6,13 @@ import me.ihdeveloper.spigot.devtools.task.ProfilerTask;
 import me.ihdeveloper.spigot.devtools.task.TPSTask;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 @SuppressWarnings("unused")
 public final class Main extends JavaPlugin implements Listener {
@@ -22,6 +27,7 @@ public final class Main extends JavaPlugin implements Listener {
 
         /* Default Setup */
         simpleSpigotDevTools.setAuthorizationHandler(new OPAuthorizationHandler());
+        simpleSpigotDevTools.setAutoDiscovery(true);
 
         DevTools.setInstance(simpleSpigotDevTools);
 
@@ -43,6 +49,25 @@ public final class Main extends JavaPlugin implements Listener {
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "Spigot|DevTools");
         getServer().getMessenger().registerIncomingPluginChannel(this, "Spigot|DevTools", new ChannelListener(simpleSpigotDevTools));
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        if (simpleSpigotDevTools.isAutoDiscovery()) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(stream);
+
+            try {
+                out.writeUTF("discovery");
+                out.writeByte(PROTOCOL_MAJOR);
+                out.writeByte(PROTOCOL_MINOR);
+            } catch (IOException exception) {
+                DevTools.getInstance().getPlugin().getLogger().warning("Failed to write discovery packet data! (not enough memory?)");
+                exception.printStackTrace();
+            }
+
+            simpleSpigotDevTools.forceSend(event.getPlayer(), stream.toByteArray());
+        }
     }
 
     @SuppressWarnings("unused")

@@ -21,6 +21,7 @@ public abstract class AbstractSpigotDevTools implements SpigotDevTools {
     private final Map<UUID, SDTContainer> containers;
     private final Map<String, List<MessageHandler>> messageHandlers;
     private AuthorizationHandler authorizationHandler;
+    private boolean autoDiscovery = true;
     private Watcher watcher;
     private SDTProfiler profiler;
     private SDTServerWall serverWall;
@@ -86,6 +87,11 @@ public abstract class AbstractSpigotDevTools implements SpigotDevTools {
     }
 
     @Override
+    public void setAutoDiscovery(boolean autoDiscovery) {
+        this.autoDiscovery = autoDiscovery;
+    }
+
+    @Override
     public boolean hasSaidHello(Player player) {
         return containers.containsKey(player.getUniqueId());
     }
@@ -139,7 +145,7 @@ public abstract class AbstractSpigotDevTools implements SpigotDevTools {
         if (!containers.containsKey(player.getUniqueId()))
             return;
 
-        player.sendPluginMessage(getPlugin(), "Spigot|DevTools", data);
+        forceSend(player, data);
     }
 
     @Override
@@ -156,8 +162,16 @@ public abstract class AbstractSpigotDevTools implements SpigotDevTools {
         return authorizationHandler;
     }
 
+    public boolean isAutoDiscovery() {
+        return autoDiscovery;
+    }
+
     public void remove(UUID uniqueId) {
         containers.remove(uniqueId);
+    }
+
+    public void forceSend(Player player, byte[] data) {
+        player.sendPluginMessage(getPlugin(), "Spigot|DevTools", data);
     }
 
     /**

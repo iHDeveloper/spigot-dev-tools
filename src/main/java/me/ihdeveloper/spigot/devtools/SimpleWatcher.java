@@ -42,7 +42,7 @@ public class SimpleWatcher implements Watcher {
             output.writeUTF(key);
             output.writeUTF(value);
         } catch (IOException exception) {
-            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write watcher(put) packet data (not enough data?)");
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write watcher(put) packet data (not enough memory?)");
             exception.printStackTrace();
         }
 

@@ -31,7 +31,7 @@ public class ProfilerTask implements Runnable {
                 out.writeDouble(item.getPercent());
             }
         } catch (IOException exception) {
-            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write profiler packet data! (not enough data?)");
+            DevTools.getInstance().getPlugin().getLogger().warning("Failed to write profiler packet data! (not enough memory?)");
             exception.printStackTrace();
             return;
         }

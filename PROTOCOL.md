@@ -15,6 +15,23 @@ The packet format in the messaging channel should look like this:
 
 ## Server-bound Messages
 
+### Discovery (Special)
+The goal of this message is to let the user know that this server supports SDT Client.
+It includes the major, and minor data of the protocol.
+It can be used to provide the ability of auto connect feature in the future.
+
+**Note:** It can be turned off by the server-side. This message is sent when the player joins the server.
+
+**Note:** This message is sent when the player joins the server.
+
+**Enabled** by default!
+
+Name: `discovery`
+```java
+byte major = in.readByte();
+byte minor = in.readByte();
+```
+
 ### Hello
 This means that the server acknowledged you and authorized you to listen to the hidden game data.
 

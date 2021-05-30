@@ -10,13 +10,21 @@ import java.util.Collection;
 
 public interface SpigotDevTools {
 
+    void broadcast(byte[] data);
+
     SDTContainer hello(Player player, byte major, byte minor);
+
+    void send(Player player, byte[] data);
+
+    void send(SDTContainer container, byte[] data);
 
     void registerHandler(String name, MessageHandler handler);
 
     void processMessage(String name, Player player, DataInputStream input);
 
     void setAuthorizationHandler(AuthorizationHandler handler);
+
+    void setAutoDiscovery(boolean autoDiscovery);
 
     boolean hasSaidHello(Player player);
 
@@ -34,9 +42,4 @@ public interface SpigotDevTools {
 
     Collection<SDTContainer> getContainers();
 
-    void send(Player player, byte[] data);
-
-    void send(SDTContainer container, byte[] data);
-
-    void broadcast(byte[] data);
 }
