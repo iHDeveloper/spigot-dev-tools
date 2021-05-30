@@ -1,7 +1,8 @@
 package me.ihdeveloper.spigot.devtools;
 
+import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.Logger;
-import me.ihdeveloper.spigot.devtools.api.SDTContainer;
+import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -66,7 +67,7 @@ public class SimpleLogger implements Logger {
     }
 
     @Override
-    public void sendCache(SDTContainer container) {
+    public void sendCache(Player player) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(stream);
         try {
@@ -82,7 +83,7 @@ public class SimpleLogger implements Logger {
                 out.writeUTF(message);
             }
 
-            Main.getInstance().broadcast(stream.toByteArray());
+            DevTools.getInstance().send(player, stream.toByteArray());
         } catch (IOException exception) {
             exception.printStackTrace();
         }
@@ -106,7 +107,7 @@ public class SimpleLogger implements Logger {
         }
 
         byte[] data = stream.toByteArray();
-        Main.getInstance().broadcast(data);
+        DevTools.getInstance().broadcast(data);
 
         current = Math.min(current, 50);
         try {

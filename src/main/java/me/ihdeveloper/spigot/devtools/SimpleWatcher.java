@@ -1,8 +1,7 @@
 package me.ihdeveloper.spigot.devtools;
 
+import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.Watcher;
-
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
@@ -14,25 +13,25 @@ public class SimpleWatcher implements Watcher {
     @Override
     public void put(String key, String value) {
         byte[] data = buildPut(key, value);
-        Main.getInstance().broadcast(data);
+        DevTools.getInstance().broadcast(data);
     }
 
     @Override
     public void put(Player player, String key, String value) {
         byte[] data = buildPut(key, value);
-        Main.getInstance().sendData(player, data);
+        DevTools.getInstance().send(player, data);
     }
 
     @Override
     public void remove(String key) {
         byte[] data = buildRemove(key);
-        Main.getInstance().broadcast(data);
+        DevTools.getInstance().broadcast(data);
     }
 
     @Override
     public void remove(Player player, String key) {
         byte[] data = buildRemove(key);
-        Main.getInstance().sendData(player, data);
+        DevTools.getInstance().send(player, data);
     }
 
     private byte[] buildPut(String key, String value) {

@@ -1,6 +1,6 @@
 package me.ihdeveloper.spigot.devtools.api;
 
-import java.util.Collection;
+import org.bukkit.entity.Player;
 
 public interface Logger {
 
@@ -12,7 +12,7 @@ public interface Logger {
 
     void debug(String message);
 
-    void sendCache(SDTContainer container);
+    void sendCache(Player player);
 
     void setMaximumCacheSize(int max);
 

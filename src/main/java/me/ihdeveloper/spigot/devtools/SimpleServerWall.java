@@ -1,7 +1,7 @@
 package me.ihdeveloper.spigot.devtools;
 
+import me.ihdeveloper.spigot.devtools.api.DevTools;
 import me.ihdeveloper.spigot.devtools.api.SDTServerWall;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
@@ -20,7 +20,7 @@ public class SimpleServerWall implements SDTServerWall {
         this.wall.put(name, value);
 
         byte[] data = buildChunkOfWall(name, value);
-        Main.getInstance().broadcast(data);
+        DevTools.getInstance().broadcast(data);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class SimpleServerWall implements SDTServerWall {
         this.wall.remove(name);
 
         byte[] data = buildRemovePartOfWall(name);
-        Main.getInstance().broadcast(data);
+        DevTools.getInstance().broadcast(data);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class SimpleServerWall implements SDTServerWall {
         this.wall.clear();
 
         byte[] data = buildClear();
-        Main.getInstance().broadcast(data);
+        DevTools.getInstance().broadcast(data);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class SimpleServerWall implements SDTServerWall {
 
     public void sendWall(Player player) {
         byte[] data = buildWall();
-        Main.getInstance().sendData(player, data);
+        DevTools.getInstance().send(player, data);
     }
 
     private byte[] buildWall() {

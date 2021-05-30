@@ -1,8 +1,6 @@
 package me.ihdeveloper.spigot.devtools.task;
 
-import me.ihdeveloper.spigot.devtools.Main;
 import me.ihdeveloper.spigot.devtools.api.DevTools;
-import me.ihdeveloper.spigot.devtools.api.SDTContainer;
 import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +35,7 @@ public class ProfilerTask implements Runnable {
             return;
         }
 
-        Main.getInstance().broadcast(stream.toByteArray());
+        DevTools.getInstance().broadcast(stream.toByteArray());
     }
 
 }

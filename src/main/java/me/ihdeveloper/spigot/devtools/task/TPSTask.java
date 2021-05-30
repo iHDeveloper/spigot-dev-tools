@@ -1,9 +1,6 @@
 package me.ihdeveloper.spigot.devtools.task;
 
-import me.ihdeveloper.spigot.devtools.Main;
 import me.ihdeveloper.spigot.devtools.api.DevTools;
-import me.ihdeveloper.spigot.devtools.api.SDTContainer;
-
 import org.bukkit.Bukkit;
 
 import java.io.ByteArrayOutputStream;
@@ -46,6 +43,6 @@ public class TPSTask implements Runnable {
             return;
         }
 
-        Main.getInstance().broadcast(stream.toByteArray());
+        DevTools.getInstance().broadcast(stream.toByteArray());
     }
 }

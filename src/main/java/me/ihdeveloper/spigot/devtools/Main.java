@@ -1,192 +1,64 @@
 package me.ihdeveloper.spigot.devtools;
 
 import me.ihdeveloper.spigot.devtools.api.DevTools;
-import me.ihdeveloper.spigot.devtools.api.Logger;
-import me.ihdeveloper.spigot.devtools.api.SDTContainer;
-import me.ihdeveloper.spigot.devtools.api.SDTProfiler;
-import me.ihdeveloper.spigot.devtools.api.SDTServerWall;
-import me.ihdeveloper.spigot.devtools.api.SpigotDevTools;
-import me.ihdeveloper.spigot.devtools.api.Watcher;
-import me.ihdeveloper.spigot.devtools.api.auth.AuthorizationHandler;
-import me.ihdeveloper.spigot.devtools.api.message.MessageHandler;
 import me.ihdeveloper.spigot.devtools.auth.OPAuthorizationHandler;
 import me.ihdeveloper.spigot.devtools.task.ProfilerTask;
 import me.ihdeveloper.spigot.devtools.task.TPSTask;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.DataInputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 @SuppressWarnings("unused")
-public final class Main extends JavaPlugin implements SpigotDevTools, Listener {
-    private static final byte protocolMajor = 0;
-    private static final byte protocolMinor = 2;
+public final class Main extends JavaPlugin implements Listener {
+    private static final byte PROTOCOL_MAJOR = 0;
+    private static final byte PROTOCOL_MINOR = 2;
 
-    private static Main instance;
-
-    public static Main getInstance() {
-        return instance;
-    }
-
-    private final Map<UUID, SDTContainer> containers = new HashMap<>();
-    private final Map<String, List<MessageHandler>> messageHandlers = new HashMap<>();
-    private final SimpleWatcher simpleWatcher = new SimpleWatcher();
-    private final SimpleProfiler simpleProfiler = new SimpleProfiler();
-    private final SimpleServerWall simpleServerWall = new SimpleServerWall();
-    private final SimpleLogger simpleLogger = new SimpleLogger(getDataFolder());
-    private AuthorizationHandler authorizationHandler;
-
-    @Override
-    public SDTContainer hello(Player player, byte major, byte minor) {
-        if (major != protocolMajor)
-            return null;
-
-        if (minor < protocolMinor)
-            return null;
-
-        if (authorizationHandler == null)
-            return null;
-
-        if (!authorizationHandler.accept(player))
-            return null;
-
-        SDTContainer container = new SimpleContainer(player.getUniqueId());
-        containers.put(player.getUniqueId(), container);
-        simpleServerWall.sendWall(player);
-        simpleLogger.sendCache(container);
-        return container;
-    }
-
-    @Override
-    public void registerHandler(String name, MessageHandler handler) {
-        messageHandlers.computeIfAbsent(name, k -> new ArrayList<>()).add(handler);
-    }
-
-    @Override
-    public void processMessage(String name, Player player, DataInputStream input) {
-        List<MessageHandler> handlers = messageHandlers.get(name);
-
-        if (handlers == null) {
-            return;
-        }
-
-        for (MessageHandler handler : handlers) {
-            handler.processMessage(this, player, input);
-        }
-    }
-
-    @Override
-    public void setAuthorizationHandler(AuthorizationHandler authorizationHandler) {
-        this.authorizationHandler = authorizationHandler;
-    }
-
-    @Override
-    public boolean hasSaidHello(Player player) {
-        return containers.containsKey(player.getUniqueId());
-    }
-
-    @Override
-    public Plugin getPlugin() {
-        return this;
-    }
-
-    @Override
-    public Watcher getWatcher() {
-        return simpleWatcher;
-    }
-
-    @Override
-    public SDTProfiler getProfiler() {
-        return simpleProfiler;
-    }
-
-    @Override
-    public SDTServerWall getServerWall() {
-        return simpleServerWall;
-    }
-
-    @Override
-    public Logger logger() {
-        return simpleLogger;
-    }
-
-    @Override
-    public SDTContainer getContainer(Player player) {
-        return containers.get(player.getUniqueId());
-    }
-
-    @Override
-    public Collection<SDTContainer> getContainers() {
-        return containers.values();
-    }
+    private SimpleSpigotDevTools simpleSpigotDevTools;
 
     @Override
     public void onEnable() {
-        /* Default Setup */
-        setAuthorizationHandler(new OPAuthorizationHandler());
+        simpleSpigotDevTools = new SimpleSpigotDevTools(this, PROTOCOL_MAJOR, PROTOCOL_MINOR);
 
-        instance = this;
-        DevTools.setInstance(this);
+        /* Default Setup */
+        simpleSpigotDevTools.setAuthorizationHandler(new OPAuthorizationHandler());
+
+        DevTools.setInstance(simpleSpigotDevTools);
 
         getServer().getPluginManager().registerEvents(this, this);
 
         getServer().getScheduler().runTaskTimer(this, new TPSTask(), 0L, 30 * 20L);
         getServer().getScheduler().runTaskTimer(this, new ProfilerTask(), 0L, 20L);
 
-        simpleServerWall.put("§eSDT Protocol Version", "v" + protocolMajor + "." + protocolMajor);
-        simpleServerWall.put("§eServer Version", getServer().getVersion());
-        simpleServerWall.put("§eBukkit Version", getServer().getBukkitVersion());
-        simpleServerWall.put("§eMax Players", "" + getServer().getMaxPlayers());
-        simpleServerWall.put("§eAllow Nether", "" + getServer().getAllowEnd());
-        simpleServerWall.put("§eAllow The End", "" + getServer().getAllowEnd());
+        DevTools.pin("§eSDT Protocol Version", "v" + PROTOCOL_MAJOR + "." + PROTOCOL_MINOR);
+        DevTools.pin("§eServer Version", getServer().getVersion());
+        DevTools.pin("§eBukkit Version", getServer().getBukkitVersion());
+        DevTools.pin("§eMax Players", "" + getServer().getMaxPlayers());
+        DevTools.pin("§eAllow Nether", "" + getServer().getAllowEnd());
+        DevTools.pin("§eAllow The End", "" + getServer().getAllowEnd());
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
-        getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + protocolMajor + "." + protocolMinor);
-        getServer().getConsoleSender().sendMessage("§6WARNING!§e The authorization method: " + authorizationHandler.toString());
+        getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + PROTOCOL_MAJOR + "." + PROTOCOL_MINOR);
+        getServer().getConsoleSender().sendMessage("§6WARNING!§e The authorization method: " + simpleSpigotDevTools.getAuthorizationHandler().toString());
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "Spigot|DevTools");
-        getServer().getMessenger().registerIncomingPluginChannel(this, "Spigot|DevTools", new ChannelListener(this));
+        getServer().getMessenger().registerIncomingPluginChannel(this, "Spigot|DevTools", new ChannelListener(simpleSpigotDevTools));
     }
 
     @SuppressWarnings("unused")
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        containers.remove(event.getPlayer().getUniqueId());
+        simpleSpigotDevTools.remove(event.getPlayer().getUniqueId());
     }
 
     @Override
     public void onDisable() {
-        simpleLogger.dispose();
+        ((SimpleLogger)simpleSpigotDevTools.logger()).dispose();
+
+        simpleSpigotDevTools.dispose();
+        simpleSpigotDevTools = null;
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§c is disabled!§e Plugin By§3 @iHDeveloper");
-    }
-
-    public void broadcast(byte[] data) {
-        for (SDTContainer container : getContainers()) {
-            sendData(container, data);
-        }
-    }
-
-    public void sendData(Player player, byte[] data) {
-        SDTContainer container = getContainer(player);
-
-        if (container != null) {
-            sendData(container, data);
-        }
-    }
-
-    public void sendData(SDTContainer container, byte[] data) {
-        container.getPlayer().sendPluginMessage(this, "Spigot|DevTools", data);
     }
 
 }

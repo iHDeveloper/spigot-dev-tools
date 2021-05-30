@@ -34,4 +34,9 @@ public interface SpigotDevTools {
 
     Collection<SDTContainer> getContainers();
 
+    void send(Player player, byte[] data);
+
+    void send(SDTContainer container, byte[] data);
+
+    void broadcast(byte[] data);
 }
