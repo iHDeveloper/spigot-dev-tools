@@ -1,6 +1,6 @@
 package me.ihdeveloper.spigot.devtools.test;
 
-import me.ihdeveloper.spigot.devtools.Main;
+import me.ihdeveloper.spigot.devtools.api.DevTools;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,7 +33,7 @@ public class HelloCommand implements CommandExecutor {
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-        player.sendPluginMessage(Main.getInstance(), "Spigot|DevTools", stream.toByteArray());
+        player.sendPluginMessage(DevTools.getInstance().getPlugin(), "Spigot|DevTools", stream.toByteArray());
         player.sendMessage("§aHello there!");
         return true;
     }
