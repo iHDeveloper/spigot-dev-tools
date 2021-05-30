@@ -67,7 +67,8 @@ public final class Main extends JavaPlugin implements Listener {
                 exception.printStackTrace();
             }
 
-            simpleSpigotDevTools.forceSend(event.getPlayer(), stream.toByteArray());
+	    event.getPlayer().sendMessage("Send the auto discovery!");
+            getServer().getScheduler().runTaskLater(this, () -> simpleSpigotDevTools.forceSend(event.getPlayer(), stream.toByteArray()), 1L);
         }
     }
 

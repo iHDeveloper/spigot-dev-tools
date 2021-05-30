@@ -67,7 +67,7 @@ public class SimpleSpigotDevTools extends AbstractSpigotDevTools {
 
     @Override
     public void sendLoggerCache(Player player) {
-        ((SimpleLogger)player).sendCache(player);
+        logger().sendCache(player);
     }
 
 }
