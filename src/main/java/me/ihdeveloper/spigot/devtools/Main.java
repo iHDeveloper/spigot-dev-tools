@@ -44,6 +44,7 @@ public final class Main extends JavaPlugin implements Listener {
         DevTools.pin("§eAllow The End", "" + getServer().getAllowEnd());
 
         getServer().getConsoleSender().sendMessage("§eSpigot Dev Tools§a is enabled!§e Plugin By§3 @iHDeveloper");
+        getServer().getConsoleSender().sendMessage("§4!!! §eThis project is in the §cALPHA§e state §4!!!");
         getServer().getConsoleSender().sendMessage("§bINFO!§e Protocol Version:§7 v" + PROTOCOL_MAJOR + "." + PROTOCOL_MINOR);
         getServer().getConsoleSender().sendMessage("§6WARNING!§e The authorization method: " + simpleSpigotDevTools.getAuthorizationHandler().toString());
 

@@ -2,6 +2,9 @@
 # Spigot Dev Tools
 Lightweight spigot library to provide developer tools to monitor/debug the Minecraft game world.
 
+**Note:** This project is in the alpha state.
+If you found any bug/glitch, open an issue in the [issue tracker](https://github.com/iHDeveloper/spigot-dev-tools/issues).
+
 ## 🌃⠀Showcase
 [[Old] Youtube](https://youtu.be/BXlPDq4DVlw)
 
@@ -43,6 +46,9 @@ Overview of the server cycle performance (aka TPS).
 ## 📦⠀Modules
 - `~` (aka root) is Spigot plugin to host the custom plugin messaging channel
 - `~/legacy-mod` is forge mod (1.8.9) for providing graphical developer tools
+
+## 🗓⠀Protocol
+You can view the protocol structure and design [here](./PROTOCOL.md).
 
 ## 🗄⠀Download
 ### Plugin
