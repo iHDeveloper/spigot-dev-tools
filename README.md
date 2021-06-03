@@ -100,4 +100,4 @@ depend:
 ```
 
 ## 👨‍💻⠀Credits
-This project is made⠀by @iHDeveloper
+This project is made by @iHDeveloper
