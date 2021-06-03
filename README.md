@@ -10,56 +10,34 @@ If you found any bug/glitch, open an issue in the [issue tracker](https://github
 | **1.8.x** (Legacy) | ✓ | ✓ |
 | **1.16.x** | ✓ (not tested) | Not Supported |
 
-## 🌃⠀Showcase
-[[Old] Youtube](https://youtu.be/BXlPDq4DVlw)
+## Example
 
-### Server Wall
-![Server Wall](./img/server-wall.png)
-Global information about the server
 ```java
+/* Pin a global info about the maximum number of players */
 DevTools.pin("Max Players", "20");
-DevTools.unpin("Max Players");
-```
 
-### Profiler
-![Profiler](./img/profiler.png)
-Overview of the performance of certain operations in the server
-```java
+/* Profile a selected region of your code */
 DevTools.profileStart("Regions");
-/* Regions calculation */
+/* Regions calculation/processing */
 DevTools.profileEnd("Regions");
-```
 
-### Logger
-![Logger](./img/logger.png)
-Records events that occur in the server
-```java
-DevTools.logger().info("This server is using the test plugin of §eSpigot Dev Tools!");
-DevTools.logger().info("§ePlugin By §c@iHDeveloper");
+/* Log information about certain events in the server */
 DevTools.logger().info("Example of info log message!");
 DevTools.logger().warn("Example of warn log message!");
 DevTools.logger().err("Example of error log message!");
 DevTools.logger().debug("Example of debug log message!");
-DevTools.logger().debug("Example of debug log message!");
-```
 
-### Watcher
-![Watcher](./img/watcher.png)
-Read-Only table to watch multiple values (different for each player)
-```java
+/* Watch a temporary information for everyone or certain player */
 DevTools.watch("Winner", winnerName);
-DevTools.unwatch("Winner"); /* Broadcasted to all online players ONLY! */
-
 DevTools.watch(player, "Region", regionName);
-DevTools.unwatch(player, "Region");
 ```
 
-### TPS
-![TPS](./img/tps.png)
-Overview of the server cycle performance (aka TPS).
-```java
-/* Enabled by default! */
-```
+## 🌃⠀Screenshots
+![Logger](./img/logger.png)
+More screenshots? click [here](./SCREENSHOTS.md)
+
+(Old) Youtube Video? click [here](https://youtu.be/BXlPDq4DVlw)
+
 
 ## 📦⠀Modules
 - `~` (aka root) is Spigot plugin to host the custom plugin messaging channel
@@ -75,17 +53,17 @@ You can download the main plugin from [here](https://github.com/iHDeveloper/spig
 - Maven
 ```xml
 <repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
 </repositories>
 
 <dependency>
-    <groupId>me.ihdeveloper</groupId>
-    <artifactId>spigot-dev-tools</artifactId>
-    <version>v0.3-alpha</version>
-    <scope>provided</scope> <!-- The API is already included with the plugin -->
+<groupId>me.ihdeveloper</groupId>
+<artifactId>spigot-dev-tools</artifactId>
+<version>v0.3-alpha</version>
+<scope>provided</scope> <!-- The API is already included with the plugin -->
 </dependency>
 ```
 
